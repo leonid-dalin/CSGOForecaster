@@ -1,6 +1,8 @@
 from textwrap import wrap
 import PySimpleGUI as sg
 import os
+import pandas as pd
+
 
 from ctypes import alignment
 from tkinter import *
@@ -32,31 +34,12 @@ def showCredits(event):
     wScrollbar = Scrollbar(main_frame, orient=HORIZONTAL, command=my_canvas.xview)
     wScrollbar.pack(side=BOTTOM, fill=X)
 
-    
-  
-    """"
     second_frame = Frame(my_canvas)
+    my_canvas.create_window((0,0), window=second_frame, anchor="nw")    
     
-
-    my_canvas.create_window((0,0), window=second_frame, anchor="nw")
-    
-    # Create our Scrollbar
-    text_scroll = Scrollbar(main_frame)
-    text_scroll.pack(side=RIGHT, fill=Y)
-
-    # Create Two Text Boxes
-    my_text1 = Text(main_frame, width=20, height=25, font=("Helvetica", 16), yscrollcommand=text_scroll.set, wrap="none")
-    my_text1.pack(side=RIGHT, padx=5)
-    my_text2 = Text(main_frame, width=20, height=25, font=("Helvetica", 16), yscrollcommand=text_scroll.set, wrap="none")
-    my_text2.pack(side=LEFT)
-
-    # Configure Scrollbar
-    text_scroll.config(command=multiple_yview)
-     """
-    
-    f = open('credits.html', 'r', encoding='utf-8')
+    f = open('credits.txt', 'r', encoding='utf-8')
     file_contents = f.read()
-    creditsLabel = Text(my_canvas, text=file_contents, justify=LEFT)
+    creditsLabel = Label(second_frame, text=file_contents, justify=LEFT)
     f.close()
     my_canvas.configure(yscrollcommand=hScrollbar.set, xscrollcommand=wScrollbar.set)
     my_canvas.bind('<Configure>', lambda e: my_canvas.configure(scrollregion=my_canvas.bbox("all")))
@@ -68,10 +51,12 @@ def createNewWindow():
 
 
 def simulate(self):
-    for root, dirs, files in os.walk("Documents\_java\CSGOForecaster\data", topdown=False):
+    path = 'data/'
+    for root, dirs, files in os.walk(path, topdown=False):
         for filename in files:
             if filename.endswith('.xlsx'):
-                print (os.path.join(root, filename))
+                df_sheet_all = pd.read_excel(root + '/' + filename, sheet_name=None)
+                print(df_sheet_all)
 
 
 theLabel = Label(root, text="CSGOForecaster\n by Petre Leonid-Dalin\n\n\n")
